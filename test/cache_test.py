@@ -11,7 +11,7 @@ logger.addHandler(logging.StreamHandler())
 
 class CacheTest(unittest.TestCase):
     def test_factory(self):
-        cache = cache_decorator('memory')
+        cache = cache_decorator('file')
 
         @cache
         def foo(a, b):
@@ -25,9 +25,9 @@ class CacheTest(unittest.TestCase):
         def foo3():
             return None
 
-        @cache('key', params_sign=False)
+        @cache(key='key', params_sign=False)
         def foo4():
-            return None
+            return 'foo4'
 
         foo(1, 1)
         foo(1, 1)
@@ -40,4 +40,4 @@ class CacheTest(unittest.TestCase):
         foo3()
 
         foo4()
-        foo4()
+        print(foo4())

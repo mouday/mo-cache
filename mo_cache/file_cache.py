@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import pickle
-from hashlib import md5
 from time import time
 
 from .cache_abstract import CacheAbstract
@@ -23,7 +22,7 @@ class FileCache(CacheAbstract):
             os.makedirs(self.cache_dir)
 
     def _get_cache_filename(self, key):
-        return os.path.join(self.cache_dir, '%s.cache' % md5(key.encode()).hexdigest())
+        return os.path.join(self.cache_dir, '%s.cache' % key)
 
     def set(self, key, value, expire=-1):
 
