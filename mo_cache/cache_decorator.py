@@ -44,7 +44,7 @@ class CacheDecorator(object):
                 else:
                     inner_cache_key = cache_key
 
-                logger.debug('cache_key:', inner_cache_key)
+                logger.debug('cache_key: %s', inner_cache_key)
 
                 value = self.cache_instance.get(inner_cache_key)
 

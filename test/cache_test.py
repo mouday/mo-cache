@@ -3,10 +3,14 @@
 import unittest
 from mo_cache import cache_decorator
 
+import logging
+
+logger = logging.getLogger('mo-cache')
+logger.addHandler(logging.StreamHandler())
+
 
 class CacheTest(unittest.TestCase):
     def test_factory(self):
-
         cache = cache_decorator('memory')
 
         @cache
