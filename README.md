@@ -1,12 +1,18 @@
 # Mo-Cache
 
+![PyPI](https://img.shields.io/pypi/v/mo-cache.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/mo-cache)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mo-cache)
+![PyPI - License](https://img.shields.io/pypi/l/mo-cache)
+
+
 a simple cache lib support memory、file、redis
 
 
 ## install
  
 ```bash
-pip install Mo-Cache
+pip install mo-cache
 ```
 
 ## demo
