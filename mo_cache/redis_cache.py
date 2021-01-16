@@ -4,10 +4,10 @@ import pickle
 
 from redis import Redis
 
-from .cache_abstract import CacheAbstract
+from .cache_decorator import CacheDecorator
 
 
-class RedisCache(CacheAbstract):
+class RedisCache(CacheDecorator):
     """Redis 缓存"""
 
     # 默认的缓存地址

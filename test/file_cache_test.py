@@ -16,3 +16,12 @@ class FileCacheTest(unittest.TestCase):
         cache.set('age', 23, 1)
         sleep(2)
         print(cache.get('age'))
+
+        @cache
+        def foo(name):
+            print('foo inner')
+            return 'foo' + name
+
+        print(foo('name'))
+        print(foo('jack'))
+        print(foo('steve'))

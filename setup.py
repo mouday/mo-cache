@@ -55,7 +55,7 @@ setup(
     author='Peng Shiyu',
     author_email='pengshiyuyx@gmail.com',
     license='MIT',
-    url="https://github.com/mouday/Mo-Cache",
+    url="https://github.com/mouday/mo-cache",
 
     long_description=long_description,
     long_description_content_type='text/markdown',

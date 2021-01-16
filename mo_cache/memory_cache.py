@@ -2,26 +2,20 @@
 
 from time import time
 
-from .cache_abstract import CacheAbstract
+from .cache_decorator import CacheDecorator
 
 
-class MemoryCache(CacheAbstract):
-    """简单内存cache缓存系统
+class MemoryCache(CacheDecorator):
+    """
+    内存缓存
 
     参考：https://encrt.com/2016/12/26/python-%E5%86%85%E5%AD%98cache/
     """
 
     def __init__(self):
         """
-        初始化
-
-        数据结构
-        {
-            key: {
-                    value: '',
-                    expire_time: ''
-                }
-        }
+        数据结构:
+            {key: {value: '', expire_time: ''}}
         """
         self.data = {}
 

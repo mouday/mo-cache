@@ -1,63 +1,80 @@
 # -*- coding: utf-8 -*-
+
+import pickle
+from functools import wraps
 from hashlib import md5
 
 from .cache_abstract import CacheAbstract
 from .logger import logger
-import pickle
 
 
-class CacheDecorator(object):
+class CacheDecorator(CacheAbstract):
     """cache 装饰器"""
 
-    def __init__(self, cache_class, *arg, **kwargs):
-        if not issubclass(cache_class, CacheAbstract):
-            raise Exception('cache_class must is subclass of CacheAbstract')
+    def set(self, key, value, expire=-1):
+        raise NotImplementedError()
 
-        self.cache_instance = cache_class(*arg, **kwargs)
+    def get(self, key):
+        raise NotImplementedError()
 
-    def cache(self, key=None, expire=-1, params_sign=True):
+    def __call__(self, key=None, expire=-1):
         """
+        缓存装饰器
         :param key:
             如果没有指定cache_key, cache_key = 模块名.方法名.方法参数md5值
             如果指定了cache_key, cache_key = 指定的cache_key.方法参数md5值
 
-        :param expire: 缓存时间 秒
+        :param expire: 缓存时间 秒；默认-1，永久缓存
 
-        :param params_sign: 参数指纹，方法参数的md5值 加入到 cache_key 不同参数可以单独缓存
-        :return:
+        :return: object
         """
 
-        def wrapper(func):
+        def decorator(func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                # 默认key
+                cache_key = self.get_cache_key(key, func, *args, **kwargs)
 
-            # 默认key
-            if key is None or callable(key):
-                cache_key = func.__module__ + '.' + func.__name__
-            else:
-                cache_key = key
+                logger.info('cache_key: %s', cache_key)
 
-            def inner_wrapper(*args, **kwargs):
-
-                # 增加参数签名
-                if params_sign is True:
-                    params = pickle.dumps(args) + pickle.dumps(kwargs)
-                    inner_cache_key = cache_key + '.' + md5(params).hexdigest()
-                else:
-                    inner_cache_key = cache_key
-
-                logger.debug('cache_key: %s', inner_cache_key)
-
-                value = self.cache_instance.get(inner_cache_key)
+                value = self.get(cache_key)
 
                 if not value:
                     value = func(*args, **kwargs)
-                    self.cache_instance.set(inner_cache_key, value, expire)
+                    self.set(key=cache_key, value=value, expire=expire)
 
                 return value
 
-            return inner_wrapper
+            return wrapper
 
         # 可以不写函数括号
         if callable(key):
-            return wrapper(key)
+            return decorator(key)
 
-        return wrapper
+        return decorator
+
+    def _get_md5(self, text):
+        """获取md5"""
+        return md5(text).hexdigest()
+
+    def _get_params_sign(self, *args, **kwargs):
+        """获取参数唯一值"""
+        params = pickle.dumps(args) + pickle.dumps(kwargs)
+        return self._get_md5(params)
+
+    def _get_func_name(self, func):
+        """获取函数的名称"""
+        return func.__module__ + '.' + func.__name__
+
+    def get_cache_key(self, key_or_func, func, *args, **kwargs):
+        """获取缓存key"""
+        cache_key = key_or_func
+
+        # 默认key
+        if key_or_func is None or callable(key_or_func):
+            cache_key = self._get_func_name(func)
+
+        # 增加参数签名
+        cache_key = cache_key + '.' + self._get_params_sign(*args, **kwargs)
+
+        return cache_key

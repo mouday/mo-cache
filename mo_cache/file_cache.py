@@ -3,12 +3,12 @@ import os
 import pickle
 from time import time
 
-from .cache_abstract import CacheAbstract
+from .cache_decorator import CacheDecorator
 
 
-class FileCache(CacheAbstract):
-    """delete、clear 删除动作较为危险，不实现具体方法
-
+class FileCache(CacheDecorator):
+    """
+    文件缓存
     参考：
     https://zhuanlan.zhihu.com/p/25110164
     """

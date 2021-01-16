@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from mo_cache import cache_decorator
+from mo_cache import cache_decorator, MemoryCache
 
 import logging
 
@@ -11,7 +11,7 @@ logger.addHandler(logging.StreamHandler())
 
 class CacheTest(unittest.TestCase):
     def test_factory(self):
-        cache = cache_decorator('file')
+        cache = MemoryCache()
 
         @cache
         def foo(a, b):
@@ -25,7 +25,7 @@ class CacheTest(unittest.TestCase):
         def foo3():
             return None
 
-        @cache(key='key', params_sign=False)
+        @cache('key')
         def foo4():
             return 'foo4'
 

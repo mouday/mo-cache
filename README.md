@@ -8,6 +8,7 @@
 
 a simple cache lib support memory、file、redis
 
+Github: https://github.com/mouday/mo-cache
 
 ## install
  
@@ -16,10 +17,11 @@ pip install mo-cache
 ```
 
 ## demo
-```python
-from mo_cache import cache_decorator
 
-cache = cache_decorator('memory')
+```python
+from mo_cache import MemoryCache
+
+cache = MemoryCache()
 
 @cache
 def foo(a, b):
@@ -27,7 +29,9 @@ def foo(a, b):
 
 if __name__ == '__main__':
     foo()
+
 ```
+
 
 继承体系
 
@@ -42,13 +46,16 @@ class CacheAbstract(ABC):
     def get(self, key):
         pass
 
-class MemoryCache(CacheAbstract):
+class CacheDecorator(CacheAbstract):
+    """cache 装饰器"""
+    
+class MemoryCache(CacheDecorator):
     """内存缓存"""
 
-class FileCache(CacheAbstract):
+class FileCache(CacheDecorator):
     """文件缓存"""
     
-class RedisCache(CacheAbstract):
+class RedisCache(CacheDecorator):
     """Redis 缓存"""
 
 ```
