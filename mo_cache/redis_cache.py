@@ -8,7 +8,13 @@ from .cache_abstract import CacheAbstract
 
 
 class RedisCache(CacheAbstract):
-    def __init__(self, redis_url):
+    """Redis 缓存"""
+
+    # 默认的缓存地址
+    default_redis_url = "redis://localhost:6379/0"
+
+    def __init__(self, redis_url=None):
+        redis_url = redis_url or self.default_redis_url
         self.redis = Redis.from_url(redis_url)
 
     def set(self, key, value, expire=-1):

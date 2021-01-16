@@ -13,8 +13,11 @@ class FileCache(CacheAbstract):
     https://zhuanlan.zhihu.com/p/25110164
     """
 
-    def __init__(self, cache_dir='cache'):
-        self.cache_dir = cache_dir
+    # 默认的缓存文件夹
+    default_cache_dir = 'cache'
+
+    def __init__(self, cache_dir=None):
+        self.cache_dir = cache_dir or self.default_cache_dir
         self._create_cache_dir()
 
     def _create_cache_dir(self):

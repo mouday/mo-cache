@@ -29,3 +29,26 @@ if __name__ == '__main__':
     foo()
 ```
 
+继承体系
+
+```python
+from abc import ABC
+
+class CacheAbstract(ABC):
+    """统一的接口"""
+    def set(self, key, value, expire=-1):
+        pass
+
+    def get(self, key):
+        pass
+
+class MemoryCache(CacheAbstract):
+    """内存缓存"""
+
+class FileCache(CacheAbstract):
+    """文件缓存"""
+    
+class RedisCache(CacheAbstract):
+    """Redis 缓存"""
+
+```
