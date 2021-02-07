@@ -36,9 +36,8 @@ if __name__ == '__main__':
 继承体系
 
 ```python
-from abc import ABC
 
-class CacheAbstract(ABC):
+class CacheAbstract():
     """统一的接口"""
     def set(self, key, value, expire=-1):
         pass
