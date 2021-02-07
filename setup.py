@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals
 
 import io
 import os
@@ -34,11 +35,10 @@ pip install -U clask -i https://pypi.org/simple
 https://packaging.python.org/guides/making-a-pypi-friendly-readme/
 """
 
+VERSION = '0.0.6'
+
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-version = {}
-with io.open(os.path.join(base_dir, "mo_cache/version.py"), 'r') as f:
-    exec(f.read(), version)
 
 with io.open("README.md", 'r', encoding='utf-8') as f:
     long_description = f.read()
@@ -48,7 +48,7 @@ with io.open("requirements.txt", 'r') as f:
 
 setup(
     name='mo-cache',
-    version=version["VERSION"],
+    version=VERSION,
     description="a simple cache lib support memory、file、redis",
 
     keywords='cache',
@@ -62,7 +62,8 @@ setup(
 
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        "Programming Language :: Python :: 3.7"
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3"
     ],
 
     packages=find_packages(),
