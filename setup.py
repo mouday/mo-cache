@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals
 
+import glob
 import io
 import os
 
+import six
 from setuptools import setup, find_packages
 
 """
@@ -35,16 +37,23 @@ pip install -U clask -i https://pypi.org/simple
 https://packaging.python.org/guides/making-a-pypi-friendly-readme/
 """
 
-VERSION = '0.0.6'
-
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
+# 版本号
+version_file = glob.glob("*/version.py", recursive=True)[0]
 
+with io.open(version_file, 'rb') as f:
+    version_var = {}
+    six.exec_(f.read(), version_var)
+    VERSION = version_var['VERSION']
+
+# 说明
 with io.open("README.md", 'r', encoding='utf-8') as f:
     long_description = f.read()
 
+# 依赖
 with io.open("requirements.txt", 'r') as f:
-    install_requires = f.read().split(os.sep)
+    install_requires = f.read().split(os.linesep)
 
 setup(
     name='mo-cache',
@@ -62,8 +71,8 @@ setup(
 
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3"
+        "Programming Language :: Python :: 3",
+        'Programming Language :: Python :: 3.7'
     ],
 
     packages=find_packages(),

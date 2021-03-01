@@ -16,7 +16,7 @@ class RedisCache(CacheDecorator):
 
     def __init__(self, redis_url=None):
         redis_url = redis_url or self.default_redis_url
-        self.redis = Redis.from_url(redis_url)
+        self.redis = Redis.from_url(url=redis_url)
 
     def set(self, key, value, expire=-1):
         if expire == -1:

@@ -20,16 +20,16 @@ class FileCache(CacheDecorator):
 
     def __init__(self, cache_dir=None):
         self.cache_dir = cache_dir or self.default_cache_dir
-        self._create_cache_dir()
 
-    def _create_cache_dir(self):
+    def create_cache_dir(self):
         if not os.path.exists(self.cache_dir):
             os.makedirs(self.cache_dir)
 
-    def _get_cache_filename(self, key):
+    def get_cache_filename(self, key):
         return os.path.join(self.cache_dir, '%s.cache' % key)
 
     def set(self, key, value, expire=-1):
+        self.create_cache_dir()
 
         if expire > -1:
             expire = time() + expire
@@ -39,11 +39,11 @@ class FileCache(CacheDecorator):
             'expire_time': expire
         }
 
-        with open(self._get_cache_filename(key), 'wb') as f:
+        with open(self.get_cache_filename(key), 'wb') as f:
             pickle.dump(obj, f)
 
     def get(self, key):
-        cache_filename = self._get_cache_filename(key)
+        cache_filename = self.get_cache_filename(key)
 
         if not os.path.exists(cache_filename):
             return None
